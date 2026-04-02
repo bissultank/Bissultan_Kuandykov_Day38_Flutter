@@ -1,38 +1,30 @@
+// This is a basic Flutter widget test.
+//
+// To perform an interaction with a widget in your test, use the WidgetTester
+// utility in the flutter_test package. For example, you can send tap and scroll
+// gestures. You can also use WidgetTester to find child widgets in the widget
+// tree, read text, and verify that the values of widget properties are correct.
+
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:provider/provider.dart';
+
 import 'package:notes_clean_architecture/main.dart';
-import 'package:notes_clean_architecture/domain/note.dart';
-import 'package:notes_clean_architecture/domain/notes_repository.dart';
-
-class FakeNotesRepository implements NotesRepository {
-  @override
-  Future<void> addNote(Note note) async {}
-
-  @override
-  Future<void> deleteNote(String id) async {}
-
-  @override
-  Future<List<Note>> getNotes() async => [];
-
-  @override
-  Future<void> refresh() async {}
-
-  @override
-  Future<void> updateNote(Note note) async {}
-}
 
 void main() {
-  testWidgets('MyApp показывает пустое состояние, если заметок нет', (
-    WidgetTester tester,
-  ) async {
-    await tester.pumpWidget(
-      Provider<NotesRepository>.value(
-        value: FakeNotesRepository(),
-        child: const MyApp(),
-      ),
-    );
-    await tester.pumpAndSettle();
+  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+    // Build our app and trigger a frame.
+    await tester.pumpWidget(const MyApp());
 
-    expect(find.text('Пока нет заметок\nДобавьте первую!'), findsOneWidget);
+    // Verify that our counter starts at 0.
+    expect(find.text('0'), findsOneWidget);
+    expect(find.text('1'), findsNothing);
+
+    // Tap the '+' icon and trigger a frame.
+    await tester.tap(find.byIcon(Icons.add));
+    await tester.pump();
+
+    // Verify that our counter has incremented.
+    expect(find.text('0'), findsNothing);
+    expect(find.text('1'), findsOneWidget);
   });
 }
